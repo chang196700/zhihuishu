@@ -1,0 +1,20 @@
+{
+    "name": "Zhihuishu",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "description": "Zhihuishu",
+    "browser_action": {
+        "default_title": "Zhihuishu",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "http://*.zhihuishu.com/",
+        "https://*.zhihuishu.com/"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["http://course.zhihuishu.com/learning/*"],
+            "js": ["video.js"]
+        }
+    ]
+}
