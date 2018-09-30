@@ -6,10 +6,15 @@
   "dependencies": {},
   "devDependencies": {
     "electron": "^3.0.2",
-    "electron-packager": "^12.1.2"
+    "electron-builder": "^20.28.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist-all": "electron-builder --all",
+    "dist-win": "electron-builder --win",
+    "dist-linux": "electron-builder --linux"
   },
   "repository": {
     "type": "git",
@@ -20,5 +25,32 @@
   "bugs": {
     "url": "https://github.com/chang196700/zhihuishu/issues"
   },
-  "homepage": "https://github.com/chang196700/zhihuishu#readme"
+  "homepage": "https://github.com/chang196700/zhihuishu#readme",
+  "build": {
+    "appId": "info.chang-feng.zhihuishu",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "7z",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "apk",
+          "arch": ["arm64"]
+        }
+      ]
+    }
+  }
 }

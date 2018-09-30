@@ -35,7 +35,8 @@ function createWindow () {
     win.webContents.on('dom-ready', () => {
         if (regVideo.test(win.getURL()))
         {
-            win.webContents.executeJavaScript('noderequire("' + path.join(__dirname, 'inject.js') + '")', true)
+            win.webContents.executeJavaScript('const path = noderequire("path"); \
+                noderequire(path.join(__app.__dirname, "inject.js"))', true)
         }
 
     })

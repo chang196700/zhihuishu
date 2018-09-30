@@ -13,6 +13,7 @@ let ori_onComplete //= obj.callback.onComplete
 // 4: play(complete)
 let video_status = -1
 let retry = -1
+let option_retry = -1;
 let long_pause = null
 
 console.log(global.notice)
@@ -74,21 +75,29 @@ function play_bind() {
 function pause_bind() {
     video_status = video_status >=3 ? 3 : 1
     if ($('.wrap_popboxes.wrap_popchapter').length > 0) {
-        let frame = $(window.frames["tmDialog_iframe"].contentDocument)
-        frame.find('.answerOption input').each(function () {
-            let type = $(this).attr('_type')
-            let ans = $(this).attr('_correctanswer')
-            if(type == 'radio') {
-                if(ans == 1) {
-                    $(this).click()
-                }
-            } else {
-                $(this).attr('checked', ans == 1 ? true : false)
+        let check_option = function () {
+            let frame = $(window.frames["tmDialog_iframe"].contentDocument)
+            ++option_retry
+            if (!option_retry && frame.find('.answerOption').length === 0) {
+                setTimeout(check_option, 500)
+                return
             }
-        })
-        setTimeout(function () {
-            $('.popbtn_cancel').click()
-        }, 3000)
+            frame.find('.answerOption').each(function () {
+                let type = $(this).attr('_type')
+                let ans = $(this).find('input').attr('_correctanswer')
+                if(type == 'radio') {
+                    if(ans == 1) {
+                        $(this).find('input').click()
+                    }
+                } else {
+                    $(this).find('input').attr('checked', ans == 1 ? true : false)
+                }
+            })
+            setTimeout(function () {
+                $('.popbtn_cancel').click()
+            }, 3000)
+        }
+        check_option()
     } else {
         long_pause = setTimeout(function () {
             ipcRenderer.send('shownotice', 'Notice', 'Pasued 10 seconds', true)

@@ -1,5 +1,9 @@
 const path = require('path')
 
+window.__app = {
+    __dirname: __dirname
+}
+
 window.noderequire = window.require;
 delete window.require;
 delete window.exports;
