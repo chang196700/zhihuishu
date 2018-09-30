@@ -35,7 +35,7 @@ function createWindow () {
     win.webContents.on('dom-ready', () => {
         if (regVideo.test(win.getURL()))
         {
-            win.webContents.executeJavaScript('noderequire(\'' + path.join(__dirname, 'inject.js') + '\')', true)
+            win.webContents.executeJavaScript('noderequire("' + path.join(__dirname, 'inject.js') + '")', true)
         }
 
     })
@@ -70,7 +70,7 @@ app.on('ready', () => {
             role: 'quit'
         }
     ])
-    tray = new Tray('./icon.png')
+    tray = new Tray(path.join(__dirname, 'icon.png'))
     tray.setToolTip('Zhihuishu')
     tray.setContextMenu(contextMenu)
     createWindow();
