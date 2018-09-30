@@ -1,0 +1,24 @@
+{
+  "name": "zhihuishu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^3.0.2",
+    "electron-packager": "^12.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chang196700/zhihuishu.git"
+  },
+  "author": "Chang Feng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chang196700/zhihuishu/issues"
+  },
+  "homepage": "https://github.com/chang196700/zhihuishu#readme"
+}
