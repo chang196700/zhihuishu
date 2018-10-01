@@ -22,7 +22,7 @@ function createWindow () {
         }
     })
 
-    win.setMenu(null)
+    //win.setMenu(null)
 
     win.maximize()
 
@@ -30,6 +30,7 @@ function createWindow () {
 
     win.on('closed', () => {
         win = null
+        app.quit()
     })
 
     win.webContents.on('dom-ready', () => {
@@ -96,3 +97,15 @@ function onshownotice(event, title, body, isToggle) {
 }
 
 ipcMain.on('shownotice', onshownotice)
+
+ipcMain.on('error', (event, msg, url, lineNumber) => {
+    // let notice = new Notification({
+    //     title: 'Error',
+    //     body: 'Message: ' + msg + ', URL: ' + url + ', line: ' + lineNumber,
+    // })
+    // notice.on('click', () => {
+    //     win.show()
+    //     win.webContents.openDevTools()
+    // })
+    // notice.show()
+})
