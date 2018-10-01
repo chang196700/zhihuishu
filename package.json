@@ -1,9 +1,11 @@
 {
   "name": "zhihuishu",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "description": "",
   "main": "app.js",
-  "dependencies": {},
+  "dependencies": {
+    "i18n": "^0.8.3"
+  },
   "devDependencies": {
     "electron": "^3.0.2",
     "electron-builder": "^20.28.4"
@@ -32,11 +34,21 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "7z",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis-web",
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
@@ -44,11 +56,15 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "apk",
-          "arch": ["arm64"]
+          "arch": [
+            "arm64"
+          ]
         }
       ]
     }
