@@ -1,4 +1,5 @@
 const path = require('path')
+const {ipcRenderer} = require('electron')
 
 window.__app = {
     __dirname: __dirname
@@ -13,15 +14,13 @@ function completed() {
     document.removeEventListener('DOMContentLoaded', completed)
     window.removeEventListener('load', completed)
 
-    // $.holdReady()
-
-    document.getElementsByTagName('script')[22]
 }
 
 document.addEventListener('DOMContentLoaded', completed)
 window.addEventListener('load', completed)
 
-console.log(document.head)
-
-console.log(document.getElementsByTagName('script')[21])
-console.log(document)
+window.onerror = function (msg, url, lineNumber) {
+    ipcRenderer.send('error', msg, url, lineNumber)
+    // window.location.reload()
+    return false
+}
