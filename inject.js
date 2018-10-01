@@ -94,7 +94,7 @@ function get_progress() {
 }
 
 function cycle() {
-    console.log('Cycle')
+    // console.log('Cycle')
     try {
         if (video_status >= 0 && obj.player.playbackRate() < 1.5) {
             setTimeout(function () {
@@ -196,7 +196,7 @@ function pause_bind() {
         check_option()
     } else {
         long_pause = setTimeout(function () {
-            ipcRenderer.send('shownotice', 'Notice', 'Pasued 20 seconds', true)
+            ipcRenderer.send('shownotice', __('Notice'), __('Pasued 20 seconds'), true)
             long_pause = null
         }, 20000);
     }
@@ -219,7 +219,10 @@ function complete_bind() {
 
         if (progress == '100') {
             if ($('.tm_next_lesson').css('display') === 'none') {
-                ipcRenderer.send('shownotice', 'Finish', 'Finished!', true)
+                ipcRenderer.send('shownotice', __('Finish'), __('Finished!'), true)
+                clearInterval(iscycle)
+                iscycle = null
+                retry = 0
             } else if (video_status >= 3) {
                 console.log('Play next')
                 clearInterval(iscycle)
