@@ -1,6 +1,6 @@
 {
   "name": "zhihuishu",
-  "version": "0.0.2-alpha",
+  "version": "0.0.3-alpha",
   "description": "",
   "main": "app.js",
   "dependencies": {
@@ -58,12 +58,6 @@
           "target": "AppImage",
           "arch": [
             "x64"
-          ]
-        },
-        {
-          "target": "apk",
-          "arch": [
-            "arm64"
           ]
         }
       ]

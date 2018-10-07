@@ -17,17 +17,55 @@ let option_retry = -1;
 let long_pause = null
 let progress = 'null'
 let iscycle = null
+let c_pause = 0
+let c_cycle = 0
+let c_play = 0
+let c_ready = 0
+let c_obj = 0
+let c_complete = 0
+let autoref = 0
 
 console.log('Injected')
 
+function clean(count, timer) {
+    if (count > 1000) {
+        if (timer) {
+            clearTimeout(timer)
+            clearInterval(timer)
+        }
+        window.location.reload()
+        return true
+    } else {
+        return false
+    }
+}
+
+function auto() {
+    if (autoref > 300) {
+        if (obj) {
+            obj.player.pause()
+        }
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000);
+    } else {
+        autoref++
+    }
+}
+
+// setInterval(auto, 1000)
+
 window.addEventListener('error', function (msg, url, line) {
     if (typeof(url) === 'undefined') {
-        // window,location.reload()
+        window,location.reload()
     }
-    return false
+    return true
 })
 
 function get_obj() {
+    if (clean(c_obj++)) {
+        return
+    }
     if (PlayerStarter.playerArray.length > 0) {
         obj = PlayerStarter.playerArray[0]
         ori_onPause = obj.callback.onPause
@@ -71,6 +109,16 @@ function get_obj() {
             clearTimeout(long_pause)
             long_pause = null
         }
+        if (iscycle == null) {
+            iscycle = setInterval(cycle, 3000)
+        }
+        try {
+            if(obj.player.isReady_ && video_status < 0) {
+                video_status = 0
+            }
+        } catch {
+
+        }
     } else {
         setTimeout(get_obj, 500)
     }
@@ -94,7 +142,10 @@ function get_progress() {
 }
 
 function cycle() {
-    // console.log('Cycle')
+    if (clean(c_cycle++)) {
+        return
+    }
+    console.log('Cycle')
     try {
         if (video_status >= 0 && obj.player.playbackRate() < 1.5) {
             setTimeout(function () {
@@ -107,12 +158,15 @@ function cycle() {
         get_obj()
     }
     get_progress()
-    // if (video_status >= 0 && (video_status < 3 || retry) && progress == '100') {
-    //     obj.callback.onComplete()
-    // }
+    if (video_status >= 0 && (video_status < 3 || retry) && progress == '100') {
+        obj.callback.onComplete()
+    }
 }
 
 function ready_bind() {
+    if (clean(c_ready++)) {
+        return
+    }
     console.log('Ready')
     video_status = 0
     retry = 0
@@ -120,12 +174,12 @@ function ready_bind() {
         clearTimeout(long_pause)
         long_pause = null
     }
-    if (iscycle == null) {
-        iscycle = setInterval(cycle, 3000)
-    }
 }
 
 function play_bind() {
+    if (clean(c_play++)) {
+        return
+    }
     console.log('Play')
     video_status = video_status >= 3 ? 4 : 2
     if (long_pause) {
@@ -135,89 +189,102 @@ function play_bind() {
 }
 
 function pause_bind() {
+    if (clean(c_pause++)) {
+        return
+    }
     console.log('Pause')
     video_status = video_status >=3 ? 3 : 1
     if ($('.wrap_popboxes').length > 0) {
         console.log('Popup!')
         const check_option = function () {
             ++option_retry
-            if (option_retry < 5 && $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption').length === 0) {
-                console.log('No options found!' + option_retry)
-                setTimeout(check_option, 500)
-            } else {
-                option_retry = -1
-                let ansa = []
-                let i = 0
-                $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption').each(function () {
-                    // let type = $(this).attr('_type')
-                    let input = $(this).find('input')
-                    let ans = input.attr('_correctanswer')
-                    ansa[i++] = ans
-                    // console.log('Option ' + input.val() + ' choose ' + ans)
-                    // if(type == 'radio') {
-                    //     if(ans == 1) {
-                    //         input.click()
-                    //     }
-                    // } else {
-                    //     input.attr('checked', ans == 1 ? true : false)
-                    // }
-                })
-                let click_option = function (i) {
-                    let ans_option = $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption')
-                    if (i < ans_option.length) {
-                        let type = $(ans_option[i]).attr('_type')                    
-                        let input = $(ans_option[i]).find('input')
-                        console.log('Option ' + input.val() + ' choose ' + ansa[i])
-                        if(type == 'radio') {
-                            if(ansa[i] == 1) {
-                                input.click()
+            try {
+                if (option_retry < 5 && $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption').length === 0) {
+                    console.log('No options found!' + option_retry)
+                    setTimeout(check_option, 500)
+                } else {
+                    option_retry = -1
+                    let ansa = []
+                    let i = 0
+                    $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption').each(function () {
+                        // let type = $(this).attr('_type')
+                        let input = $(this).find('input')
+                        let ans = input.attr('_correctanswer')
+                        ansa[i++] = ans
+                        // console.log('Option ' + input.val() + ' choose ' + ans)
+                        // if(type == 'radio') {
+                        //     if(ans == 1) {
+                        //         input.click()
+                        //     }
+                        // } else {
+                        //     input.attr('checked', ans == 1 ? true : false)
+                        // }
+                    })
+                    let click_option = function (i) {
+                        let ans_option = $(window.frames["tmDialog_iframe"].contentDocument).find('.answerOption')
+                        if (i < ans_option.length) {
+                            let type = $(ans_option[i]).attr('_type')                    
+                            let input = $(ans_option[i]).find('input')
+                            console.log('Option ' + input.val() + ' choose ' + ansa[i])
+                            if(type == 'radio') {
+                                if(ansa[i] == 1) {
+                                    input.click()
+                                }
+                            } else {
+                                if(ansa[i] == 1 && !input.attr('checked')) {
+                                    input.click()
+                                }
+                                // input.attr('checked', ansa[i] == 1 ? true : false)
                             }
+                            setTimeout(() => {
+                                click_option(i + 1)
+                            }, 500)
                         } else {
-                            if(ansa[i] == 1 && !input.attr('checked')) {
-                                input.click()
-                            }
-                            // input.attr('checked', ansa[i] == 1 ? true : false)
+                            setTimeout(function () {
+                                $('.popbtn_cancel').click()
+                                console.log('Popup Cancel')
+                            }, 1000)
                         }
-                        setTimeout(() => {
-                            click_option(i + 1)
-                        }, 500)
-                    } else {
-                        setTimeout(function () {
-                            $('.popbtn_cancel').click()
-                            console.log('Popup Cancel')
-                        }, 1000)
                     }
+                    setTimeout(() => {
+                        click_option(0)
+                    }, 1000)
                 }
+            } catch {
                 setTimeout(() => {
-                    click_option(0)
+                    check_option()
                 }, 1000)
             }
         }
         check_option()
     } else {
-        long_pause = setTimeout(function () {
-            ipcRenderer.send('shownotice', __('Notice'), __('Pasued 20 seconds'), true)
-            long_pause = null
-        }, 20000);
+        // long_pause = setTimeout(function () {
+        //     ipcRenderer.send('shownotice', __('Notice'), __('Pasued 20 seconds'), true)
+        //     long_pause = null
+        // }, 20000);
     }
 }
 
 function complete_bind() {
+    if (clean(c_complete)) {
+        return
+    }
     console.log('Complete')
     video_status = video_status >=3 ? video_status : video_status + 2
 
     get_progress()
 
-    if (progress == 'null') {
-        setTimeout(complete_bind, 1000)
-        console.log('progress is null')
-    } if (progress == '-1') {
-        setTimeout(complete_bind, 1000)
-        console.log('progress is loading')
-    } else {
-        console.log('Complete ' + progress)
+    // if (progress == 'null') {
+    //     setTimeout(complete_bind, 1000)
+    //     console.log('progress is null')
+    // } if (progress == '-1') {
+    //     setTimeout(complete_bind, 1000)
+    //     console.log('progress is loading')
+    // } else {
+        // console.log('Complete ' + progress)
+        console.log('Complete')
 
-        if (progress == '100') {
+        // if (progress == '100') {
             if ($('.tm_next_lesson').css('display') === 'none') {
                 ipcRenderer.send('shownotice', __('Finish'), __('Finished!'), true)
                 clearInterval(iscycle)
@@ -232,12 +299,12 @@ function complete_bind() {
                 video_status = -1
                 setTimeout(get_obj, 1000)
             }
-        } else {
-            console.log('Not complete, retry')
-            retry = 1
-            obj.player.play()
-        }
-    }
+        // } else {
+        //     console.log('Not complete, retry')
+        //     retry = 1
+        //     obj.player.play()
+        // }
+    // }
 
     if (long_pause) {
         clearTimeout(long_pause)
