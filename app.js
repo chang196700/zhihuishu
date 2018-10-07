@@ -96,6 +96,11 @@ app.on('ready', () => {
                 }
             ]
         }, {
+            label: i18n.__('Hide'),
+            click: function (menuItem, browserWindow) {
+                browserWindow.hide()
+            }
+        }, {
             label: i18n.__('Help'),
             submenu: [
                 {
