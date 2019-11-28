@@ -1,7 +1,13 @@
-const {app, BrowserWindow, Menu, Tray, Notification, ipcMain, globalShortcut} = require('electron')
+require('update-electron-app')({
+    repo: 'chang196700/zhihuishu'
+})
+const {app, BrowserWindow, Menu, Tray, Notification, ipcMain, globalShortcut, session} = require('electron')
+const store = new (require('electron-store'))
 const fs = require('fs')
 const path = require('path')
 const i18n = require('i18n')
+
+const sessionCookiesKey = 'chang196700.zhihuishu.cookies'
 
 // const regVideo = /^http(s?):\/\/study\.zhihuishu\.com\/learning\/videoList/
 
@@ -32,7 +38,14 @@ function createWindow () {
 
     win.maximize()
 
-    win.loadURL('https://passport.zhihuishu.com/login?service=http://online.zhihuishu.com/onlineSchool/')
+    //win.loadURL('https://passport.zhihuishu.com/login?service=http://www.zhihuishu.com/')
+    win.loadURL('https://www.zhihuishu.com/')
+
+    // loadCookies();
+    
+    win.on('close', () => {
+        // saveCookies();
+    })
 
     win.on('closed', () => {
         win = null
@@ -44,7 +57,6 @@ function createWindow () {
         //     win.webContents.executeJavaScript('const path = noderequire("path"); \
         //         noderequire(path.join(__app.__dirname, "inject.js"))', true)
         // }
-
     })
 
     win.webContents.on('did-finish-load', () => {
@@ -154,3 +166,41 @@ ipcMain.on('error', (event, msg, url, lineNumber) => {
 ipcMain.on('geti18n', (event) => {
     event.returnValue = {i18n_config, locale: app.getLocale()}
 })
+
+// function saveCookies() {
+//     if (win) {
+//         win.webContents.session.cookies.get({})
+//             .then((cookies) => {
+//                 store.set(sessionCookiesKey, cookies);
+//             })
+//             .catch((error) => {
+//                 console.log(error)
+//             })
+//     }
+// }
+
+// function loadCookies() {
+//     if (win) {
+//         let cookies = store.get(sessionCookiesKey) || []
+//         if (cookies.length <= 0) {
+//             return
+//         }
+//         cookies.forEach((cookie) => {
+//             let {
+//                 secure = false,
+//                 domain = '',
+//                 path = ''
+//             } = cookie
+//             win.webContents.session.cookies
+//                 .set(
+//                     Object.assign(cookie, {
+//                         url: (secure ? 'https://' : 'http://') + domain.replace(/^\./, '') + path
+//                     })
+//                 )
+//                 .then(() => {})
+//                 .catch((e) => {
+//                     console.error(e)
+//                 })
+//         })
+//     }
+// }

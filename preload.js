@@ -2,7 +2,7 @@ const path = require('path')
 const {ipcRenderer} = require('electron')
 const i18n = require('i18n')
 
-const regVideo = /^http(s?):\/\/study\.zhihuishu\.com\/learning\/videoList/
+const regVideo = /^http(s?):\/\/study\.zhihuishu\.com\/learning(New)?\/videoList/
 
 window.__app = {
     __dirname: __dirname
