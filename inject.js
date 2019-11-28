@@ -133,7 +133,7 @@ function get_progress() {
         } if (text == '历史累计观看时间,给力加载中') {
             progress = '-1'
         } else {
-            progress = text.replace('本节视频,累计观看时间『','').replace('』','').replace('%','')
+            progress = text.replace('本节视频,累计观看时间『','').replace('』','').replace('%','').replace('The accumulated time of watching this video『', '')
         }
     } catch (e) {
         console.log('get progress failed')
@@ -210,7 +210,14 @@ function pause_bind() {
                         // let type = $(this).attr('_type')
                         let input = $(this).find('input')
                         let ans = input.attr('_correctanswer')
-                        ansa[i++] = ans
+                        if (ans) {
+                            ansa[i++] = ans
+                        } else {
+                            setTimeout(() => {
+                                check_option()
+                            }, 1000)
+                            return
+                        }
                         // console.log('Option ' + input.val() + ' choose ' + ans)
                         // if(type == 'radio') {
                         //     if(ans == 1) {
@@ -242,7 +249,13 @@ function pause_bind() {
                         } else {
                             setTimeout(function () {
                                 $('.popbtn_cancel').click()
-                                console.log('Popup Cancel')
+                                if ($('.wrap_popboxes').length > 0) {
+                                    setTimeout(() => {
+                                        click_option(0)
+                                    }, 1000)
+                                } else {
+                                    console.log('Popup Cancel')
+                                }
                             }, 1000)
                         }
                     }
