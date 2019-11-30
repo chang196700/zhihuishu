@@ -103,6 +103,12 @@ app.on('ready', () => {
             label: i18n.__('File'),
             submenu: [
                 {
+                    label: i18n.__('Reload'),
+                    click: function (menuItem, browserWindow) {
+                        browserWindow.reload()
+                    }
+                },
+                {
                     label: i18n.__('Quit'),
                     role: 'quit'
                 }
