@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "CommonJS",
+        "watch": false,
+        "sourceMap": true,
+        "outDir": "./build",
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "types": []
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./node_modules",
+        "./build"
+    ]
+}

@@ -1,69 +1,24 @@
 {
   "name": "zhihuishu",
-  "version": "0.1.1",
-  "description": "",
-  "main": "app.js",
-  "dependencies": {
-    "electron-store": "^5.1.0",
-    "i18n": "^0.8.4",
-    "js-yaml": ">=3.13.1",
-    "update-electron-app": "^1.5.0"
+  "version": "1.0.0",
+  "main": "./build/app.js",
+  "repository": "https://github.com/chang196700/zhihuishu.git",
+  "author": "Chang Feng <chang_196700@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^3.1.13",
-    "electron-builder": "^20.44.4"
+    "@types/electron": "^1.6.10",
+    "@types/i18n": "^0.8.6",
+    "electron": "^8.2.3",
+    "electron-build": "^0.0.3",
+    "electron-store": "^5.1.1",
+    "i18n": "^0.9.0",
+    "typescript": "^3.8.3",
+    "ts-node": "^8.8.2"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "dist-all": "electron-builder --all",
-    "dist-win": "electron-builder --win",
-    "dist-linux": "electron-builder --linux"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chang196700/zhihuishu.git"
-  },
-  "author": "Chang Feng",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chang196700/zhihuishu/issues"
-  },
-  "homepage": "https://github.com/chang196700/zhihuishu#readme",
-  "build": {
-    "appId": "info.chang-feng.zhihuishu",
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "7z",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "nsis-web",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    },
-    "linux": {
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    }
+  "dependencies": {
   }
 }
